@@ -1,0 +1,10 @@
+version: "3"
+services:
+  api:
+    build: "./"
+    ports:
+      - "4000:4000"
+    volumes:
+      - /server.js
+    env_file:
+      - ./.env
