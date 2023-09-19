@@ -1,13 +1,13 @@
-require("dotenv").config()
+require("dotenv").config();
 const express = require("express");
-const models=require("./models")
-const mongoose=require("mongoose")
+const models = require("./models");
+const mongoose = require("mongoose");
 
 const cors = require("cors");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-// const routes = require("./routes/index");
+const routes = require("./routes/index");
 const app = express();
 
 const PORT = process.env.PORT;
@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-// app.use("/api/v1", routes);
+app.use("/api/v1", routes);
 
 mongoose
   .connect(process.env.MONGODB_URL, {
