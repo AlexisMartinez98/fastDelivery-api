@@ -1,26 +1,37 @@
+require("dotenv").config()
 const express = require("express");
+const models=require("./models")
+const mongoose=require("mongoose")
+
 const cors = require("cors");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 // const routes = require("./routes/index");
-const router = express();
+const app = express();
 
-require("dotenv").config();
 const PORT = process.env.PORT;
-//Actualizar ruta de la  db
-// const db = require("./config")
-// const models = require("./models")
-router.use(cors());
-router.use(morgan("tiny"));
-router.use(express.json());
-router.use(bodyParser.urlencoded({ extended: false }));
-router.use(bodyParser.json());
-router.use(cookieParser());
+app.use(cors());
+app.use(morgan("tiny"));
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(cookieParser());
 
-// router.use("/api/v1", routes);
-//Agregar vinculacion de mongoose:
+// app.use("/api/v1", routes);
 
-router.listen(4000, () => {
-  console.log("listening on port 4000");
-});
+mongoose
+  .connect(process.env.MONGODB_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("MongoDB connected");
+    app.listen(PORT, () => {
+      console.log(`Server is listening on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
