@@ -38,8 +38,7 @@ userSchema.methods.setPassword = async function (password) {
 };
 
 userSchema.methods.validPassword = async function (password) {
-  const hashPass = await bcrypt.hash(password, this.salt);
-  return this.password === hashPass;
+  return bcrypt.compare(password, this.password);
 };
 
 const userModel = mongoose.model("User", userSchema);

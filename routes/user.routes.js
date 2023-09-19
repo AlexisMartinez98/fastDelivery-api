@@ -6,5 +6,6 @@ const {
 } = require("../midlewares/userValidator.midlewares");
 
 userRoutes.post("/register", createUserValidation, UserController.createUser);
+userRoutes.post("/login", UserController.authentication);
 
 module.exports = userRoutes;
