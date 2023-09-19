@@ -28,5 +28,26 @@ class UserController {
       res.status(404).json({ error: error.message });
     }
   }
+
+  static async authentication(req, res) {
+    try {
+      const { email, password } = req.body;
+      const user = await userModel.findOne({ email }).select("+password");
+      if (!user) {
+        return res.status(404).json({ msg: "El usuario no existe." });
+      }
+      if (await user.validPassword(password)) {
+        res.status(200).json({
+          _id: user._id,
+          email: user.email,
+        });
+      } else {
+        res.status(401).json({ msg: "Contraseña incorrecta." });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
+
 module.exports = UserController;
