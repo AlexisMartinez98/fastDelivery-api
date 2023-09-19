@@ -32,6 +32,10 @@ class UserController {
   static async authentication(req, res) {
     try {
       const { email, password } = req.body;
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
       const user = await userModel.findOne({ email }).select("+password");
       if (!user) {
         return res.status(404).json({ msg: "El usuario no existe." });
