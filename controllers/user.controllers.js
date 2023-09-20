@@ -1,7 +1,7 @@
 const UserService = require("../services/user.services");
 const userModel = require("../models/user.model");
 const { validationResult } = require("express-validator");
-const generateJWT = require("../helpers/generateJwt");
+const { generateJWT, verifyJWT } = require("../helpers/generateJwt");
 
 class UserController {
   static async createUser(req, res) {
@@ -42,6 +42,7 @@ class UserController {
         return res.status(404).json({ msg: "El usuario no existe." });
       }
       if (await user.validPassword(password)) {
+        // res.cookie("token", generateJWT(user.email));
         res.status(200).json({
           _id: user._id,
           email: user.email,
@@ -53,6 +54,15 @@ class UserController {
     } catch (error) {
       console.log(error);
     }
+  }
+  static async me(req, res) {
+    const token = req.cookies.token;
+    if (!token) {
+      return res.status(418).send("no hay user");
+    }
+    const { payload } = verifyJWT(token);
+    console.log("payload", payload);
+    res.json(payload);
   }
 }
 
