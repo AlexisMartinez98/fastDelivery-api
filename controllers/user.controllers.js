@@ -57,12 +57,13 @@ class UserController {
   }
   static async me(req, res) {
     const token = req.cookies.token;
+    console.log("tokennn", token);
     if (!token) {
-      return res.status(418).send("no hay user");
+      return res.status(401).json({ msg: "no hay usuario" });
     }
     const { payload } = verifyJWT(token);
     console.log("payload", payload);
-    res.json(payload);
+    res.status(200).json(payload);
   }
 }
 
