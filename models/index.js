@@ -1,3 +1,4 @@
-const userModel=require("./user.model")
+const userModel = require("./user.model");
+const packageModel = require("./packages.model");
 
-module.exports=userModel;
+module.exports = { userModel, packageModel };
