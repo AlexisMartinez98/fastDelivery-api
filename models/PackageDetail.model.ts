@@ -1,7 +1,15 @@
-const mongoose= require ("mongoose");
+import mongoose, { Schema, Document } from "mongoose";
 import modelOptions from "./model.options";
 
-const packageDetail = new mongoose.Schema(
+interface IPackageDetail extends Document {
+  user_id: number;
+  number_unities: number;
+  status: boolean;
+  package_loading_date: Date;
+  date_create: Date;
+}
+
+const packageDetailSchema = new Schema<IPackageDetail>(
   {
     user_id: {
       type: Number,
@@ -25,14 +33,21 @@ const packageDetail = new mongoose.Schema(
     date_create: {
       type: Date,
       default: Date.now,
-      
     },
-    
   },
   modelOptions
 );
 
+packageDetailSchema.methods.setPackageLoadingDate = function (
+  this: IPackageDetail,
+  package_loading_date: Date
+) {
+  this.package_loading_date = package_loading_date;
+};
 
-const packageDetailModel = mongoose.model("PackageDetail", packageDetail);
+const PackageDetailModel = mongoose.model<IPackageDetail>(
+  "PackageDetail",
+  packageDetailSchema
+);
 
-module.exports = packageDetailModel;
+export default PackageDetailModel;
