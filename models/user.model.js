@@ -28,6 +28,13 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    token: {
+      type: String,
+    },
+    confirm: {
+      type: Boolean,
+      default: false,
+    },
   },
   { modelOptions }
 );

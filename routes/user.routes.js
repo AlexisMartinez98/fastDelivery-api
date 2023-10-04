@@ -9,5 +9,8 @@ const {
 userRoutes.post("/register", createUserValidation, UserController.createUser);
 userRoutes.post("/login", loginValidation, UserController.authentication);
 userRoutes.get("/me", UserController.me);
+userRoutes.get("/confirm/:token", UserController.confirm);
+userRoutes.post("/forgetPassword", UserController.forgetPassword);
+userRoutes.post("/newPassword/:token", UserController.newPassword);
 
 module.exports = userRoutes;
