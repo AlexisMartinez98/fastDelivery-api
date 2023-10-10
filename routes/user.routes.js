@@ -12,5 +12,6 @@ userRoutes.get("/me", UserController.me);
 userRoutes.get("/confirm/:token", UserController.confirm);
 userRoutes.post("/forgetPassword", UserController.forgetPassword);
 userRoutes.post("/newPassword/:token", UserController.newPassword);
+userRoutes.get("/logout", UserController.logout);
 
 module.exports = userRoutes;
