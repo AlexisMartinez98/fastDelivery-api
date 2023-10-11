@@ -44,4 +44,3 @@ test("It should give an error when registering an existing email", async () => {
 
   expect(response.statusCode).toBe(400);
 });
-
