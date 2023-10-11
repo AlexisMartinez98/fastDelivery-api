@@ -1,6 +1,20 @@
 require("dotenv").config();
 const transporter = require("../config/nodemailerConfig.js");
 
+function sendEmail(mailOptions) {
+  return new Promise((resolve, reject) => {
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error("Error al enviar el correo electrónico:", error);
+        reject(error);
+      } else {
+        console.log("Correo electrónico enviado:", info.response);
+        resolve(info);
+      }
+    });
+  });
+}
+
 async function sendRegistrationEmail(destinatario, nombreUsuario, token) {
   const mailOptions = {
     from: process.env.USER_MAILER,
@@ -10,14 +24,14 @@ async function sendRegistrationEmail(destinatario, nombreUsuario, token) {
     a continuacion te dejamos el link para poder confirmar tu cuenta\n\n click en el link --> http://localhost:3000/confirm_account/${token}`,
   };
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error("Error al enviar el correo electrónico:", error);
-    } else {
-      console.log("Correo electrónico enviado:", info.response);
-    }
-  });
+  try {
+    const info = await sendEmail(mailOptions);
+    return info;
+  } catch (error) {
+    throw error;
+  }
 }
+
 async function forgetPassword(destinatario, nombreUsuario, token) {
   const mailOptions = {
     from: process.env.USER_MAILER,
@@ -27,18 +41,12 @@ async function forgetPassword(destinatario, nombreUsuario, token) {
     a continuacion te dejamos el link para poder cambiar tu contraseña\n\n click en el link --> http://localhost:3000/new_password/${token}`,
   };
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error("Error al enviar el correo electrónico:", error);
-    } else {
-      console.log("Correo electrónico enviado:", info.response);
-    }
-  });
+  try {
+    const info = await sendEmail(mailOptions);
+    return info;
+  } catch (error) {
+    throw error;
+  }
 }
-
-const nuevoUsuario = {
-  email: "nuevo_usuario@example.com",
-  nombre: "Nombre del Nuevo Usuario",
-};
 
 module.exports = { sendRegistrationEmail, forgetPassword };
