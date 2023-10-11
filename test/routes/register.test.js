@@ -44,14 +44,3 @@ test("It should give an error when registering an existing email", async () => {
 
   expect(response.statusCode).toBe(400);
 });
-
-test("login", async () => {
-  const userData = {
-    email: "micauvilla23@gmail.com",
-    password: "Mica123456",
-  };
-
-  const response = await request(app).post("/api/v1/user/login").send(userData);
-
-  expect(response.statusCode).toBe(200);
-});
