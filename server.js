@@ -12,7 +12,7 @@ const app = express();
 
 const PORT = process.env.PORT;
 
-//variable para exportar módulo!!
+
 const server = app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`)
 });
@@ -40,9 +40,7 @@ mongoose
   .then(() => {
     console.log("MongoDB connected");
     server;
-    // app.listen(PORT, () => {
-    //   console.log(`Server is listening on port ${PORT}`);
-    //});
+    
   })
   .catch((err) => {
     console.error(err);
