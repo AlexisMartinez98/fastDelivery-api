@@ -155,9 +155,10 @@ class UserController {
       return res.status(404).json({ msg: error.message });
     }
   }
-  static  logout = (req, res) => {
+  static async logout (req, res){
     try {
       res.clearCookie("token");
+      console.log("logout ok");
       return res.sendStatus(204);
     } catch (error) {
       return res.status(500).json({ error: "Logout failed" });
