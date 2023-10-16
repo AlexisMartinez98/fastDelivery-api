@@ -23,6 +23,14 @@ const packageSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    assigned: {
+      type: Boolean,
+      default: false,
+    },
+    delivered: {
+      type: Boolean,
+      default: false,
+    },
   },
   { modelOptions }
 );
