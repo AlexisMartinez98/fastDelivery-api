@@ -21,35 +21,7 @@ userRoutes.post("/dealers",UserController.getDealers)
 
 
 
-/*userRoutes.post("/dealers",(req,res)=>{
-  const {delivery_date}=req.body;
-  Package.find({delivery_date:delivery_date})
-  .then((packages)=>{
-    let usersId=[]
-    for(let i=0;i<packages.length;i++){
-      if(!usersId.includes(packages[i].deliveryMan_id)){
-        usersId.push(packages[i].deliveryMan_id)
-      }
-    }
-    packages.push(usersId)
-    return packages
-  
-    })
-    .then((package)=>{
-      let usersId=package.pop()
-      let promesas=usersId.map((userId)=>{return User.findById(userId)})
 
-
-      Promise.all(promesas)
-      .then((users)=>{
-        res.status(200).json({users,package})
-      })
-
-    })
-    
-
-})
-*/
 
 
 module.exports = userRoutes;
