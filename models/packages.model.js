@@ -7,21 +7,29 @@ const packageSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    amount: {
-      type: Number,
-      required: true,
+    deliveryMan_id: {
+      type: String,
+      default: "",
     },
     weight: {
       type: Number,
       required: true,
     },
     delivery_date: {
-      type: Date,
+      type: String,
       required: true,
     },
     receiver: {
       type: String,
       required: true,
+    },
+    assigned: {
+      type: Boolean,
+      default: false,
+    },
+    delivered: {
+      type: Boolean,
+      default: false,
     },
   },
   { modelOptions }
