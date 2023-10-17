@@ -7,5 +7,9 @@ backofficeRoutes.get(
   backofficeControllers.packagesPerDay
 );
 backofficeRoutes.post("/addPackages", backofficeControllers.addPackages);
+backofficeRoutes.get(
+  "/getAllDeliveryManByDate/:date",
+  backofficeControllers.getAllDeliveryManByDate
+);
 
 module.exports = backofficeRoutes;
