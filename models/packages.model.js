@@ -7,9 +7,9 @@ const packageSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    amount: {
-      type: Number,
-      required: true,
+    deliveryMan_id: {
+      type: String,
+      default: "",
     },
     weight: {
       type: Number,

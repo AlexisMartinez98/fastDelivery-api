@@ -3,7 +3,7 @@ const backofficeControllers = require("../controllers/backoffice.controllers");
 const backofficeRoutes = express();
 
 backofficeRoutes.get(
-  "/packages-per-day/:date",
+  "/packagesPerDay/:date",
   backofficeControllers.packagesPerDay
 );
 module.exports = backofficeRoutes;

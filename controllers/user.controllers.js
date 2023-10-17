@@ -76,7 +76,6 @@ class UserController {
       return res.status(403).json({ msg: "Tu cuenta no esta confirmada" });
     }
     const { payload } = verifyJWT(token);
-    console.log("payload", payload);
     res.status(200).json(payload);
   }
   static async confirm(req, res) {
@@ -101,7 +100,6 @@ class UserController {
   }
   static async forgetPassword(req, res) {
     const { email } = req.body;
-    console.log(email);
     const user = await userModel.findOne({ email });
     if (!user) {
       const error = new Error("El usuario no existe");
@@ -155,16 +153,14 @@ class UserController {
       return res.status(404).json({ msg: error.message });
     }
   }
-  static async logout (req, res){
+  static async logout(req, res) {
     try {
       res.clearCookie("token");
-      console.log("logout ok");
       return res.sendStatus(204);
     } catch (error) {
       return res.status(500).json({ error: "Logout failed" });
     }
-  };
-  
+  }
 }
 
 module.exports = UserController;
