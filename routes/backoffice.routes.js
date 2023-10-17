@@ -6,4 +6,6 @@ backofficeRoutes.get(
   "/packagesPerDay/:date",
   backofficeControllers.packagesPerDay
 );
+backofficeRoutes.post("/addPackages", backofficeControllers.addPackages);
+
 module.exports = backofficeRoutes;

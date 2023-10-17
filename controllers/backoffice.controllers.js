@@ -15,5 +15,14 @@ class backofficeControllers {
         .json({ error: "error when displaying packages from that date" });
     }
   }
+  static async addPackages(req, res) {
+    try {
+      const newPackage = await packageModel.create(req.body);
+      res.status(200).json({ newPackage });
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ error: "error when adding new package" });
+    }
+  }
 }
 module.exports = backofficeControllers;
