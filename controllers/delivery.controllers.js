@@ -26,5 +26,27 @@ class deliveryControllers {
       res.status(400).json({ msg: "error al cancelar paquete" });
     }
   }
+  static async finishDelivery(req, res) {
+    try {
+      const id = req.params.id;
+      const idExists = await packageModel.findById(id);
+      if (!idExists) {
+        return res.status(400).json({ msg: "id incorrecto" });
+      }
+      if (idExists.delivered) {
+        return res.status(400).json({ msg: "paquete ya entregado" });
+      }
+      if (!idExists.asigned || idExists.deliveryMan_id === "") {
+        return res.status(400).json({ msg: "paquete no asignado" });
+      }
+      const finishPackage = await packageModel.findByIdAndUpdate(id, {
+        delivered: true,
+      });
+      res.status(200).json({ finishPackage });
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ msg: "error al cancelar paquete" });
+    }
+  }
 }
 module.exports = deliveryControllers;
