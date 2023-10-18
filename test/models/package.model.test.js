@@ -1,9 +1,8 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
-const Package = require("../models/packages.model");
+const Package = require("../../models/packages.model");
 
 describe("Package Model", () => {
-
   beforeAll(async () => {
     await mongoose.connect(process.env.MONGODB_URL);
   });
@@ -16,7 +15,7 @@ describe("Package Model", () => {
     await mongoose.disconnect();
   });
 
-    /*afterEach(async () => {
+  /*afterEach(async () => {
     await Package.deleteMany({});
   });*/
 

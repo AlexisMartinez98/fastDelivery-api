@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
-const Users = require("../models/user.model");
+const Users = require("../../models/user.model");
 
 describe("Users Model", () => {
   beforeAll(async () => {
