@@ -4,14 +4,22 @@ const backofficeRoutes = express();
 const authAdmin = require("../midlewares/authAdmin.middleware")
 
 backofficeRoutes.get(
-  "/packages-per-day/:date",
+  "/packagesPerDay/:date",
   backofficeControllers.packagesPerDay
 );
+
 
 backofficeRoutes.post(
   "/addPackages", authAdmin,
   backofficeControllers.addPackage
 );
+
+backofficeRoutes.get(
+  "/getAllDeliveryManByDate/:date",
+  backofficeControllers.getAllDeliveryManByDate
+);
+
+backofficeRoutes.post("/dealers",backofficeControllers.getDealers)
 
 
 module.exports = backofficeRoutes;

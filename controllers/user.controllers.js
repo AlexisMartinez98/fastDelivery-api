@@ -77,7 +77,6 @@ class UserController {
       return res.status(403).json({ msg: "Tu cuenta no esta confirmada" });
     }
     const { payload } = verifyJWT(token);
-    console.log("payload", payload);
     res.status(200).json(payload);
   }
   static async confirm(req, res) {
@@ -102,7 +101,6 @@ class UserController {
   }
   static async forgetPassword(req, res) {
     const { email } = req.body;
-    console.log(email);
     const user = await userModel.findOne({ email });
     if (!user) {
       const error = new Error("El usuario no existe");
@@ -156,16 +154,64 @@ class UserController {
       return res.status(404).json({ msg: error.message });
     }
   }
-  static async logout (req, res){
+  static async logout(req, res) {
     try {
       res.clearCookie("token");
-      console.log("logout ok");
       return res.sendStatus(204);
     } catch (error) {
       return res.status(500).json({ error: "Logout failed" });
     }
+
   };
-  
+
+  /*static async userHistory(req, res) {
+    const { deliveryMan_id, delivered } = req.body;
+
+    try {
+      const packageHistory = await UserService.userHistory({deliveryMan_id:deliveryMan_id,delivered:delivered});
+      res.status(200).json(packageHistory);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async takePackage(req,res){
+    const { package_id, deliveryMan_id, assigned } = req.body;
+    try{
+      const packageAsigned=await UserService.takePackage({package_id,deliveryMan_id,assigned})
+      res.status(200).json(packageAsigned)
+
+    }
+    catch(error){console.log(error)
+
+    }
+  }
+
+  static async getDealers(req,res){
+    const { delivery_date } = req.body;
+    try{
+      const packages=await UserService.getDealers({delivery_date})
+
+      let usersId=[]
+      for(let i=0;i<packages.length;i++){
+        if(!usersId.includes(packages[i].deliveryMan_id)){
+          usersId.push(packages[i].deliveryMan_id)
+        }
+      }
+
+      let promesas=usersId.map((userId)=>{return userModel.findById(userId)})
+
+      const users= await Promise.all(promesas)
+
+      res.status(200).json({users,packages})
+
+    }
+
+    catch(error){console.log(error)
+
+    }
+
+  }*/
 }
 
 module.exports = UserController;
