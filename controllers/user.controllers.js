@@ -41,7 +41,7 @@ class UserController {
 
   static async authentication(req, res) {
     try {
-      const { email, password } = req.body;
+      const { email, password, is_admin } = req.body;
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -58,7 +58,8 @@ class UserController {
         res.status(200).json({
           _id: user._id,
           email: user.email,
-          token: generateJWT(user.email),
+          token: generateJWT(user.email, user.is_admin),
+          
         });
       } else {
         res.status(401).json({ msg: "Credenciales invalidas" });
