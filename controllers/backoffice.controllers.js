@@ -68,10 +68,10 @@ class backofficeControllers {
         if(packages[i].deliveryMan_id && !usersId.includes(packages[i].deliveryMan_id )){
           usersId.push(packages[i].deliveryMan_id)
         }
-        
+
       }
 
-      console.log("xxxxxxxxxxxxx",packages)
+
 
       let promesas=usersId.map((userId)=>{return userModel.findById(userId)})
 
