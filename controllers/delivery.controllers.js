@@ -1,5 +1,6 @@
 const packageModel = require("../models/packages.model");
 const deliveryServices=require("../services/delivery.services")
+const PackageService = require("../services/package.services")
 
 class deliveryControllers {
   static async getAllPackages(req, res) {
@@ -10,6 +11,20 @@ class deliveryControllers {
       console.log(error);
     }
   }
+
+  
+
+  static async getPackage(req, res) {
+    try {
+      const packageId = req.params.packageId;
+      const packageInfo = await PackageService.getPackageById(packageId);
+      res.status(200).json(packageInfo);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: error.message });
+    }
+  }
+
   static async cancelPackage(req, res) {
     try {
       const id = req.params.id;
