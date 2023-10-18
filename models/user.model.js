@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const modelOptions = require("./model.options");
 const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema(
@@ -27,6 +26,16 @@ const userSchema = new mongoose.Schema(
     is_admin: {
       type: Boolean,
       default: false,
+    },
+    token: {
+      type: String,
+    },
+    confirm: {
+      type: Boolean,
+      default: false,
+    },
+    status: {
+      type: String,
     },
   },
   { modelOptions }
