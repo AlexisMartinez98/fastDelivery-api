@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const modelOptions = require("./model.options");
 
 const packageSchema = new mongoose.Schema(
   {

@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const modelOptions = require("./model.options");
 const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema(
@@ -38,7 +37,6 @@ const userSchema = new mongoose.Schema(
     status: {
       type: String,
     },
-
   },
   { modelOptions }
 );

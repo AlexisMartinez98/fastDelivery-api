@@ -1,18 +1,16 @@
 const packageModel = require("../models/packages.model");
-const deliveryServices=require("../services/delivery.services")
-const PackageService = require("../services/package.services")
+const deliveryServices = require("../services/delivery.services");
+const PackageService = require("../services/package.services");
 
 class deliveryControllers {
   static async getAllPackages(req, res) {
     try {
-      const allPackages = await packageModel.find({ asigned: false });
+      const allPackages = await packageModel.find({ assigned: false });
       res.status(200).json(allPackages);
     } catch (error) {
       console.log(error);
     }
   }
-
-  
 
   static async getPackage(req, res) {
     try {
@@ -52,7 +50,7 @@ class deliveryControllers {
       if (idExists.delivered) {
         return res.status(400).json({ msg: "paquete ya entregado" });
       }
-      if (!idExists.asigned || idExists.deliveryMan_id === "") {
+      if (!idExists.assigned || idExists.deliveryMan_id === "") {
         return res.status(400).json({ msg: "paquete no asignado" });
       }
       const finishPackage = await packageModel.findByIdAndUpdate(id, {
@@ -69,22 +67,27 @@ class deliveryControllers {
     const { deliveryMan_id, delivered } = req.body;
 
     try {
-      const packageHistory = await deliveryServices.userHistory({deliveryMan_id:deliveryMan_id,delivered:delivered});
+      const packageHistory = await deliveryServices.userHistory({
+        deliveryMan_id: deliveryMan_id,
+        delivered: delivered,
+      });
       res.status(200).json(packageHistory);
     } catch (error) {
       console.log(error);
     }
   }
 
-  static async takePackage(req,res){
+  static async takePackage(req, res) {
     const { package_id, deliveryMan_id, assigned } = req.body;
-    try{
-      const packageAsigned=await deliveryServices.takePackage({package_id,deliveryMan_id,assigned})
-      res.status(200).json(packageAsigned)
-
-    }
-    catch(error){console.log(error)
-
+    try {
+      const packageAsigned = await deliveryServices.takePackage({
+        package_id,
+        deliveryMan_id,
+        assigned,
+      });
+      res.status(200).json(packageAsigned);
+    } catch (error) {
+      console.log(error);
     }
   }
 }
