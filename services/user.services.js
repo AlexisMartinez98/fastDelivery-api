@@ -14,7 +14,7 @@ class UserService {
       throw new Error("Error creating new user: " + error.message);
     }
   }
-
+/*
   static async userHistory(data) {
     const { deliveryMan_id, delivered } = data;
     try {
@@ -58,6 +58,7 @@ class UserService {
 
     }
   }
+  */
 }
 
 module.exports = UserService;

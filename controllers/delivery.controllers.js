@@ -1,4 +1,5 @@
 const packageModel = require("../models/packages.model");
+const deliveryServices=require("../services/delivery.services")
 
 class deliveryControllers {
   static async getAllPackages(req, res) {
@@ -46,6 +47,29 @@ class deliveryControllers {
     } catch (error) {
       console.log(error);
       res.status(400).json({ msg: "error al cancelar paquete" });
+    }
+  }
+
+  static async userHistory(req, res) {
+    const { deliveryMan_id, delivered } = req.body;
+
+    try {
+      const packageHistory = await deliveryServices.userHistory({deliveryMan_id:deliveryMan_id,delivered:delivered});
+      res.status(200).json(packageHistory);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async takePackage(req,res){
+    const { package_id, deliveryMan_id, assigned } = req.body;
+    try{
+      const packageAsigned=await deliveryServices.takePackage({package_id,deliveryMan_id,assigned})
+      res.status(200).json(packageAsigned)
+
+    }
+    catch(error){console.log(error)
+
     }
   }
 }

@@ -163,7 +163,7 @@ class UserController {
 
   };
 
-  static async userHistory(req, res) {
+  /*static async userHistory(req, res) {
     const { deliveryMan_id, delivered } = req.body;
 
     try {
@@ -210,7 +210,7 @@ class UserController {
 
     }
 
-  }
+  }*/
 }
 
 module.exports = UserController;

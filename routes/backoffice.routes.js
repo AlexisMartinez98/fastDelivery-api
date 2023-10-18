@@ -12,4 +12,6 @@ backofficeRoutes.get(
   backofficeControllers.getAllDeliveryManByDate
 );
 
+backofficeRoutes.post("/dealers",backofficeControllers.getDealers)
+
 module.exports = backofficeRoutes;
