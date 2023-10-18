@@ -1,6 +1,9 @@
 const packageModel = require("../models/packages.model");
 const userModel=require("../models/user.model")
+const PackageService = require("../services/package.services");
 const backofficeServices=require("../services/backoffice.services")
+
+
 class backofficeControllers {
   static async packagesPerDay(req, res) {
     try {
@@ -10,21 +13,26 @@ class backofficeControllers {
       });
       res.status(200).json({ allPackagesPerDay });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       res
         .status(400)
         .json({ error: "error when displaying packages from that date" });
     }
   }
-  static async addPackages(req, res) {
+
+
+  static async addPackage(req, res) {
     try {
-      const newPackage = await packageModel.create(req.body);
-      res.status(200).json({ newPackage });
+      const packageData = req.body;
+      const newPackage = await PackageService.createPackage(packageData);
+      res.status(201).json({ newPackage });
     } catch (error) {
-      console.log(error);
-      res.status(400).json({ error: "error al añadir paquete" });
+      console.error(error);
+      res.status(500).json({ error: "Error adding package" });
     }
   }
+
+
   static async getAllDeliveryManByDate(req, res) {
     try {
       const dateString = req.params.date;
