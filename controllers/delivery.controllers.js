@@ -8,7 +8,7 @@ class deliveryControllers {
       const allPackages = await packageModel.find({ assigned: false });
       res.status(200).json(allPackages);
     } catch (error) {
-      console.log(error);
+      console.log(error);//AGREGAR RES.STATUS // MSG: .json({ msg: "MSJ Q SEA" });
     }
   }
 
@@ -73,7 +73,7 @@ class deliveryControllers {
       });
       res.status(200).json(packageHistory);
     } catch (error) {
-      console.log(error);
+      console.log(error);//AGREGAR RES.STATUS
     }
   }
 

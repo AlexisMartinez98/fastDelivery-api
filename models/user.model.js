@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
+
 const userSchema = new mongoose.Schema(
   {
     email: {
@@ -37,8 +38,8 @@ const userSchema = new mongoose.Schema(
     status: {
       type: String,
     },
-  },
-  { modelOptions }
+  }
+  
 );
 userSchema.methods.setPassword = async function (password) {
   const salt = bcrypt.genSaltSync(8);

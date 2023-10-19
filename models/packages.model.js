@@ -31,7 +31,7 @@ const packageSchema = new mongoose.Schema(
       default: false,
     },
   },
-  { modelOptions }
+ 
 );
 const packageModel = mongoose.model("Packages", packageSchema);
 

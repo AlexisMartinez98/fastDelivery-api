@@ -10,7 +10,7 @@ backofficeRoutes.get(
 
 
 backofficeRoutes.post(
-  "/addPackages",//authAdmin,
+  "/addPackages", authAdmin,
   backofficeControllers.addPackage
 );
 
