@@ -2,6 +2,8 @@ const packageModel = require("../models/packages.model");
 const userModel = require("../models/user.model");
 const PackageService = require("../services/package.services");
 const backofficeServices = require("../services/backoffice.services");
+const { processDealersInfo } = require("../helpers/dealers.info");
+
 
 class backofficeControllers {
   static async packagesPerDay(req, res) {
@@ -61,9 +63,12 @@ class backofficeControllers {
   }
 
   static async getDealers(req, res) {
-    const { delivery_date } = req.body;
+    const { delivery_date } = req.query;
     try {
       const packages = await backofficeServices.getDealers({ delivery_date });
+
+      if(packages.length<=0){
+        throw new Error("No hay paquetes asignados el día de hoy")}
 
       let usersId = [];
       for (let i = 0; i < packages.length; i++) {
@@ -81,9 +86,17 @@ class backofficeControllers {
 
       const users = await Promise.all(promesas);
 
-      res.status(200).json({ users, packages });
+      const usersCopy = users.map((user) => user.toObject());
+      const dealersInfo=processDealersInfo(usersCopy,packages)
+    
+
+
+      res.status(200).json({ dealersInfo });
     } catch (error) {
-      console.log(error);
+      console.error("Error en dealers:",error);
+      res
+        .status(400)
+        .json({ error:error.message || "Error al obtener los repartidores para esa fecha" });
     }
   }
 }
