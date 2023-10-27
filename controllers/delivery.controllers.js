@@ -73,7 +73,8 @@ class deliveryControllers {
       });
       res.status(200).json(packageHistory);
     } catch (error) {
-      console.log(error);//AGREGAR RES.STATUS
+      console.error("Error en userHistory:",error);
+      res.status(400).json({ error: "Error al obtener el historial del usuario" });
     }
   }
 
@@ -87,7 +88,8 @@ class deliveryControllers {
       });
       res.status(200).json(packageAsigned);
     } catch (error) {
-      console.log(error);
+      console.error("Error en takePackage:",error);
+      res.status(400).json({ error: "Error al asignar un paquete al usuario" });
     }
   }
 }
