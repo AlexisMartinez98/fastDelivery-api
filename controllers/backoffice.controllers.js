@@ -4,7 +4,6 @@ const PackageService = require("../services/package.services");
 const backofficeServices = require("../services/backoffice.services");
 const { processDealersInfo } = require("../helpers/dealers.info");
 
-
 class backofficeControllers {
   static async packagesPerDay(req, res) {
     try {
@@ -25,10 +24,10 @@ class backofficeControllers {
     try {
       const packageData = req.body;
       const newPackage = await PackageService.createPackage(packageData);
-      res.status(201).json({ newPackage });
+      res.status(201).json({ newPackage, msg: "Se agrego paquete con exito" });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: "Error adding package" });
+      res.status(500).json({ error: "Error al agregar paquete" });
     }
   }
 
@@ -67,8 +66,9 @@ class backofficeControllers {
     try {
       const packages = await backofficeServices.getDealers({ delivery_date });
 
-      if(packages.length<=0){
-        throw new Error("No hay paquetes asignados el día de hoy")}
+      if (packages.length <= 0) {
+        throw new Error("No hay paquetes asignados el día de hoy");
+      }
 
       let usersId = [];
       for (let i = 0; i < packages.length; i++) {
@@ -87,16 +87,15 @@ class backofficeControllers {
       const users = await Promise.all(promesas);
 
       const usersCopy = users.map((user) => user.toObject());
-      const dealersInfo=processDealersInfo(usersCopy,packages)
-    
-
+      const dealersInfo = processDealersInfo(usersCopy, packages);
 
       res.status(200).json({ dealersInfo });
     } catch (error) {
-      console.error("Error en dealers:",error);
-      res
-        .status(400)
-        .json({ error:error.message || "Error al obtener los repartidores para esa fecha" });
+      console.error("Error en dealers:", error);
+      res.status(400).json({
+        error:
+          error.message || "Error al obtener los repartidores para esa fecha",
+      });
     }
   }
 }
