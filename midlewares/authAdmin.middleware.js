@@ -1,12 +1,12 @@
-  function authAdmin(req, res, next) {
-    console.log(req.token);
-    if (req.user && req.user.is_admin === true) {
-        console.log(" AUTH");
-      next();
-    } else {
-        
-      return res.status(403).json({ error: "Unauthorized access" });
-    }
+const { verifyJWT } = require("../helpers/generateJwt.js");
+
+function authAdmin(req, res, next) {
+  const verify = verifyJWT(req.headers.authorization);
+  if (verify.payload.id && verify.payload.is_admin === true) {
+    next();
+  } else {
+    return res.status(403).json({ msg: "Acceso denegado" });
   }
-  
-  module.exports = authAdmin ;
+}
+
+module.exports = authAdmin;
