@@ -64,11 +64,15 @@ class backofficeControllers {
   static async getDealers(req, res) {
     const { delivery_date } = req.query;
     try {
-      const packages = await backofficeServices.getDealers({ delivery_date });
+      const usersAndPackages = await backofficeServices.getDealers({ delivery_date });
+      const { packages, users }=usersAndPackages
 
-      if (packages.length <= 0) {
-        throw new Error("No hay paquetes asignados el día de hoy");
-      }
+
+      // codigo para filtrar usuarios con paquetes asignados.
+
+      /*if(packages.length<=0){
+        throw new Error("No hay paquetes asignados el día de hoy")}
+
 
       let usersId = [];
       for (let i = 0; i < packages.length; i++) {
@@ -85,6 +89,8 @@ class backofficeControllers {
       });
 
       const users = await Promise.all(promesas);
+      console.log("users",users)
+      */
 
       const usersCopy = users.map((user) => user.toObject());
       const dealersInfo = processDealersInfo(usersCopy, packages);
