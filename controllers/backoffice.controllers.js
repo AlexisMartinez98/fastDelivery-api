@@ -27,7 +27,7 @@ class backofficeControllers {
       res.status(201).json({ newPackage, msg: "Se agrego paquete con exito" });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: "Error al agregar paquete" });
+      res.status(500).json({ msg: "Error al agregar paquete" });
     }
   }
 
