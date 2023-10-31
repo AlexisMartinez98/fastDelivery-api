@@ -11,7 +11,8 @@ const generateId = require("../helpers/generateId");
 class UserController {
   static async createUser(req, res) {
     try {
-      const { email, password, salt, is_admin, confirm_password,nombre,apellido } = req.body;
+      const { email, password, salt, is_admin, confirm_password,name,last_name, image } = req.body;
+     console.log(req.body)
       const userExists = await userModel.findOne({ email: email });
       if (userExists) return res.status(400).json("El usuario ya existe");
       if (password !== confirm_password) {
@@ -23,8 +24,9 @@ class UserController {
         return res.status(400).json({ errors: errors.array() });
       }
       const user = await UserService.createUser({
-        nombre,
-        apellido,
+        name,
+        last_name,
+        image,
         email,
         password,
         salt,

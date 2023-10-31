@@ -46,6 +46,7 @@ const userSchema = new mongoose.Schema({
     default: true,
   },
 });
+
 userSchema.methods.setPassword = async function (password) {
   const salt = bcrypt.genSaltSync(8);
   this.salt = salt;
