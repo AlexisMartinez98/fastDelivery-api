@@ -64,9 +64,10 @@ class backofficeControllers {
   static async getDealers(req, res) {
     const { delivery_date } = req.query;
     try {
-      const usersAndPackages = await backofficeServices.getDealers({ delivery_date });
-      const { packages, users }=usersAndPackages
-
+      const usersAndPackages = await backofficeServices.getDealers({
+        delivery_date,
+      });
+      const { packages, users } = usersAndPackages;
 
       // codigo para filtrar usuarios con paquetes asignados.
 
@@ -101,6 +102,33 @@ class backofficeControllers {
       res.status(400).json({
         error:
           error.message || "Error al obtener los repartidores para esa fecha",
+      });
+    }
+  }
+  static async getDealersById(req, res) {
+    const { id } = req.params;
+    console.log("id", id);
+    try {
+      const user = await userModel.findById(id);
+      res.status(200).json({ user });
+    } catch (error) {
+      console.error("Error en repartidor:", error);
+      res.status(400).json({
+        error:
+          error.message || "Error al obtener los repartidores para esa fecha",
+      });
+    }
+  }
+  static async dealersToDisabled(req, res) {
+    const { id } = req.params;
+    const { status } = req.body;
+    try {
+      const user = await userModel.findByIdAndUpdate(id, { status: status });
+      res.status(200).json({ msg: "Se actualizo el estado del repartidor" });
+    } catch (error) {
+      console.error("Error en repartidor:", error);
+      res.status(400).json({
+        error: error.message || "Error al obtener el repartidor",
       });
     }
   }

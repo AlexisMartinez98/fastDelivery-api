@@ -21,4 +21,8 @@ backofficeRoutes.get(
 
 backofficeRoutes.get("/dealers", backofficeControllers.getDealers);
 
+backofficeRoutes.get("/dealers/:id", backofficeControllers.getDealersById);
+
+backofficeRoutes.put("/dealers/:id", backofficeControllers.dealersToDisabled);
+
 module.exports = backofficeRoutes;
