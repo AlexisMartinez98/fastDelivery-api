@@ -68,31 +68,6 @@ class backofficeControllers {
         delivery_date,
       });
       const { packages, users } = usersAndPackages;
-
-      // codigo para filtrar usuarios con paquetes asignados.
-
-      /*if(packages.length<=0){
-        throw new Error("No hay paquetes asignados el día de hoy")}
-
-
-      let usersId = [];
-      for (let i = 0; i < packages.length; i++) {
-        if (
-          packages[i].deliveryMan_id &&
-          !usersId.includes(packages[i].deliveryMan_id)
-        ) {
-          usersId.push(packages[i].deliveryMan_id);
-        }
-      }
-
-      let promesas = usersId.map((userId) => {
-        return userModel.findById(userId);
-      });
-
-      const users = await Promise.all(promesas);
-      console.log("users",users)
-      */
-
       const usersCopy = users.map((user) => user.toObject());
       const dealersInfo = processDealersInfo(usersCopy, packages);
 
