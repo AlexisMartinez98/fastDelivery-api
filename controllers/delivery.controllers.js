@@ -20,7 +20,8 @@ class deliveryControllers {
     try {
       const packageId = req.params.packageId;
       const packageInfo = await PackageService.getPackageById(packageId);
-      res.status(200).json(packageInfo);
+
+      res.status(200).json({_id:packageInfo._id,address:packageInfo.address,receiver:packageInfo.receiver});
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: error.message });
