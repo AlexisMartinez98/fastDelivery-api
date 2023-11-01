@@ -2,15 +2,19 @@ const packageModel = require("../models/packages.model");
 const deliveryServices = require("../services/delivery.services");
 const PackageService = require("../services/package.services");
 
+
 class deliveryControllers {
   static async getAllPackages(req, res) {
     try {
-      const allPackages = await packageModel.find({ assigned: false });
+      const allPackages = await PackageService.getAllPackages();
       res.status(200).json(allPackages);
     } catch (error) {
-      console.log(error);//AGREGAR RES.STATUS // MSG: .json({ msg: "MSJ Q SEA" });
+     
+     console.error(error);
+     res.status(500).json({ msg: "Error al obtener paquetes", error });
+   }
     }
-  }
+  
 
   static async getPackage(req, res) {
     try {
