@@ -34,6 +34,16 @@ class PackageService {
   
     return packageInfo;
   }
+
+  static async getAllPackages() {
+    try {
+      const currentDate = new Date().toISOString().split("T")[0]; 
+      const allPackages = await Package.find({ assigned: false, delivery_date: currentDate }); 
+      return allPackages;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = PackageService;
