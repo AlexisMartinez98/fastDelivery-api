@@ -82,7 +82,6 @@ class backofficeControllers {
   }
   static async getDealersById(req, res) {
     const { id } = req.params;
-    console.log("id", id);
     try {
       const user = await userModel.findById(id);
       res.status(200).json({ user });
@@ -100,6 +99,21 @@ class backofficeControllers {
     try {
       const user = await userModel.findByIdAndUpdate(id, { status: status });
       res.status(200).json({ msg: "Se actualizo el estado del repartidor" });
+    } catch (error) {
+      console.error("Error en repartidor:", error);
+      res.status(400).json({
+        error: error.message || "Error al obtener el repartidor",
+      });
+    }
+  }
+  static async delearHistory(req, res) {
+    const { id, delivered } = req.query;
+    try {
+      const packages = await packageModel.find({
+        deliveryMan_id: id,
+        delivered: delivered,
+      });
+      res.status(200).json({ packages });
     } catch (error) {
       console.error("Error en repartidor:", error);
       res.status(400).json({
