@@ -20,55 +20,23 @@ class deliveryServices {
         }
       }
     
-      // static async takePackage(data) {
-      //   const { package_id, deliveryMan_id, assigned } = data;
+      static async takePackage(data) {
+        const { package_id, deliveryMan_id, assigned } = data;
     
-      //   try {
-      //     const packageAsigned = await packageModel.findById(package_id);
-      //     packageAsigned.deliveryMan_id = deliveryMan_id;
-      //     packageAsigned.assigned = assigned;
-    
-      //     return packageAsigned.save();
-      //   } catch (error) {
-      //     console.log(error);
-      //   }
-      // }
-
-
-      static async takePackages(data) {
-      const { package_ids, deliveryMan_id, assigned } = data;
-
-      try {
-        
-        for (const package_id of package_ids) {
+        try {
           const packageAsigned = await packageModel.findById(package_id);
           packageAsigned.deliveryMan_id = deliveryMan_id;
           packageAsigned.assigned = assigned;
     
-          await packageAsigned.save(); 
+          return packageAsigned.save();
+        } catch (error) {
+          console.log(error);
         }
-      } catch (error) {
-        console.log(error);
       }
-    }
-      // static async takePackages(data) {
-      //   const { package_ids, deliveryMan_id, assigned } = data;
-      //   try {
-      //     const updatedPackages = await Promise.all(
-      //       package_ids.map(async (package_id) => {
-      //         const packageAsigned = await packageModel.findById(package_id);
-      //         packageAsigned.deliveryMan_id = deliveryMan_id;
-      //         packageAsigned.assigned = assigned;
-      //         return packageAsigned.save();
-      //       })
-      //     );
-      //     return updatedPackages;
-      //   } catch (error) {
-      //     console.error(error);
-      //     throw new Error("Error al asignar paquetes al usuario");
-      //   }
-      // }
 
+
+      
+     
 }
 
 module.exports=deliveryServices;

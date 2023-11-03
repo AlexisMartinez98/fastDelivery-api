@@ -83,33 +83,20 @@ class deliveryControllers {
     }
   }
 
-  // static async takePackage(req, res) {
-  //   const { package_id, deliveryMan_id, assigned } = req.body;
-  //   try {
-  //     const packageAsigned = await deliveryServices.takePackage({
-  //       package_id,
-  //       deliveryMan_id,
-  //       assigned,
-  //     });
-  //     res.status(200).json(packageAsigned);
-  //   } catch (error) {
-  //     console.error("Error en takePackage:",error);
-  //     res.status(400).json({ error: "Error al asignar un paquete al usuario" });
-  //   }
-  // }
-  static async takePackages(req, res) {
-    const { package_ids, deliveryMan_id, assigned } = req.body;
+  static async takePackage(req, res) {
+    const { package_id, deliveryMan_id, assigned } = req.body;
     try {
-      const updatedPackages = await deliveryServices.takePackages({
-        package_ids,
+      const packageAsigned = await deliveryServices.takePackage({
+        package_id,
         deliveryMan_id,
         assigned,
       });
-      res.status(200).json(updatedPackages);
+      res.status(200).json(packageAsigned);
     } catch (error) {
-      console.error("Error en takePackages:", error);
-      res.status(400).json({ error: "Error al asignar paquetes al usuario" });
+      console.error("Error en takePackage:",error);
+      res.status(400).json({ error: "Error al asignar un paquete al usuario" });
     }
   }
+  
 }
 module.exports = deliveryControllers;
