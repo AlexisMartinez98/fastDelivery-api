@@ -9,6 +9,6 @@ deliveryRoutes.get("/:packageId", deliveryControllers.getPackage);
 deliveryRoutes.put("/cancelPackage/:id", deliveryControllers.cancelPackage);
 deliveryRoutes.put("/finishDelivery/:id", deliveryControllers.finishDelivery);
 deliveryRoutes.post("/history",deliveryControllers.userHistory)
-deliveryRoutes.patch ("/takePackage",deliveryControllers.takePackage) //HTTP -->PATCH
+deliveryRoutes.patch ("/takePackage",deliveryControllers.takePackages) 
 
 module.exports = deliveryRoutes;
