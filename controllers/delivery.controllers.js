@@ -69,12 +69,12 @@ class deliveryControllers {
   }
 
   static async userHistory(req, res) {
-    const { deliveryMan_id, delivered } = req.body;
+    const { deliveryMan_id} = req.body;
 
     try {
       const packageHistory = await deliveryServices.userHistory({
         deliveryMan_id: deliveryMan_id,
-        delivered: delivered,
+        delivered:true,
       });
       res.status(200).json(packageHistory);
     } catch (error) {

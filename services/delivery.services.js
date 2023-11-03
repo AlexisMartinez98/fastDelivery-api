@@ -4,7 +4,7 @@ const packageModel = require("../models/packages.model");
 class deliveryServices {
 
     static async userHistory(data) {
-        const { deliveryMan_id, delivered } = data;
+        const { deliveryMan_id } = data;
         try {
           const user = await userModel.findById(deliveryMan_id);
           if (!user) {
@@ -12,7 +12,7 @@ class deliveryServices {
           }
           const packageHistory = await packageModel.find({
             deliveryMan_id: deliveryMan_id,
-            delivered: delivered,
+            delivered: true,
           });
           return packageHistory;
         } catch (error) {
