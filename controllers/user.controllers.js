@@ -70,7 +70,7 @@ class UserController {
         res.status(200).json({
           _id: user._id,
           email: user.email,
-          token: generateJWT(user.email, user.is_admin),
+          token: generateJWT(user.email, user.is_admin,user._id),
         });
       } else {
         res.status(401).json({ msg: "Credenciales invalidas" });
