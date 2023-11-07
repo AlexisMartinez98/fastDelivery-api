@@ -65,7 +65,7 @@ const id = req.params.id;
  console.error(error);
  res.status(400).json({ msg: "error al cancelar paquete" });
  }
-
+}
 
   
   
