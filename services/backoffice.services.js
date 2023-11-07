@@ -10,7 +10,8 @@ class backofficeServices {
         try{
           
           const packages=await packageModel.find({delivery_date})
-          return packages;
+          const users=await userModel.find()
+          return {users,packages};
     
         }
         catch(error){console.log(error)

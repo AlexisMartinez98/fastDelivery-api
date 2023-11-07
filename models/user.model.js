@@ -1,45 +1,56 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
-const userSchema = new mongoose.Schema(
-  {
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    password: {
-      type: String,
-      required: true,
-      select: false,
-    },
-    confirm_password: {
-      type: String,
-      require: true,
-      select: false,
-    },
-    salt: {
-      type: String,
-      required: true,
-      select: false,
-    },
-    is_admin: {
-      type: Boolean,
-      default: false,
-    },
-    token: {
-      type: String,
-    },
-    confirm: {
-      type: Boolean,
-      default: false,
-    },
-    status: {
-      type: String,
-    },
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
   },
-  { modelOptions }
-);
+  last_name: {
+    type: String,
+    required: true,
+  },
+  image: {
+    type: String,
+    required: false,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+    select: false,
+  },
+  confirm_password: {
+    type: String,
+    require: true,
+    select: false,
+  },
+  salt: {
+    type: String,
+    required: true,
+    select: false,
+  },
+  is_admin: {
+    type: Boolean,
+    default: false,
+  },
+  token: {
+    type: String,
+  },
+  confirm: {
+    type: Boolean,
+    default: false,
+  },
+  status: {
+    type: Boolean,
+    default: true,
+  },
+});
+
 userSchema.methods.setPassword = async function (password) {
   const salt = bcrypt.genSaltSync(8);
   this.salt = salt;

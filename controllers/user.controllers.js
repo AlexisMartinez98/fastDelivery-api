@@ -10,8 +10,18 @@ const generateId = require("../helpers/generateId");
 
 class UserController {
   static async createUser(req, res) {
+    const refererUrl = req.headers.referer;
     try {
-      const { email, password, salt, is_admin, confirm_password } = req.body;
+      const {
+        email,
+        password,
+        salt,
+        is_admin,
+        confirm_password,
+        name,
+        last_name,
+        image,
+      } = req.body;
       const userExists = await userModel.findOne({ email: email });
       if (userExists) return res.status(400).json("El usuario ya existe");
       if (password !== confirm_password) {
@@ -23,6 +33,9 @@ class UserController {
         return res.status(400).json({ errors: errors.array() });
       }
       const user = await UserService.createUser({
+        name,
+        last_name,
+        image,
         email,
         password,
         salt,
@@ -31,7 +44,8 @@ class UserController {
       await sendRegistrationEmail(
         email,
         email.trim().split("@")[0],
-        user.token
+        user.token,
+        refererUrl
       );
       return res.status(201).json({ user });
     } catch (error) {
@@ -58,7 +72,7 @@ class UserController {
         res.status(200).json({
           _id: user._id,
           email: user.email,
-          token: generateJWT(user.email, user.is_admin),
+          token: generateJWT(user.email, user.is_admin, user._id),
         });
       } else {
         res.status(401).json({ msg: "Credenciales invalidas" });
@@ -68,16 +82,22 @@ class UserController {
     }
   }
   static async me(req, res) {
-    const token = req.cookies.token;
-    if (!token) {
-      return res.status(401).json({ msg: "no hay usuario" });
+    try {
+      const token = req.headers.cookies;
+      if (!token) {
+        return res.status(401).json({ msg: "No hay usuario" });
+      }
+      const { payload } = verifyJWT(token);
+      if (!payload) {
+        return res.status(404).json({ msg: "El usuario no existe" });
+      }
+      res.status(200).json(payload);
+    } catch (error) {
+      console.error("Error en la verificación de usuario:", error);
+      res.status(500).json({ msg: "Error interno del servidor" });
     }
-    if (!userModel.confirm) {
-      return res.status(403).json({ msg: "Tu cuenta no esta confirmada" });
-    }
-    const { payload } = verifyJWT(token);
-    res.status(200).json(payload);
   }
+
   static async confirm(req, res) {
     const { token } = req.params;
     const userConfirm = await userModel.findOne({ token: token });
@@ -99,6 +119,7 @@ class UserController {
     }
   }
   static async forgetPassword(req, res) {
+    const refererUrl = req.headers.referer;
     const { email } = req.body;
     const user = await userModel.findOne({ email });
     if (!user) {
@@ -117,7 +138,12 @@ class UserController {
     try {
       user.token = generateId();
       await user.save();
-      await forgetPassword(email, email.trim().split("@")[0], user.token);
+      await forgetPassword(
+        email,
+        email.trim().split("@")[0],
+        user.token,
+        refererUrl
+      );
       res.json({ msg: "Se ha enviado un correo para cambiar la contraseña" });
     } catch (error) {
       console.log(error);

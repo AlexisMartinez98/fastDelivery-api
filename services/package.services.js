@@ -17,7 +17,7 @@ class PackageService {
       throw new Error('Package not found');
     }
   
-    let deliveryManName = '';
+    /*let deliveryManName = '';
   
     if (singlePackage.deliveryMan_id) {
       const deliveryMan = await userModel.findById(singlePackage.deliveryMan_id);
@@ -30,9 +30,20 @@ class PackageService {
       id: singlePackage._id,
       address: singlePackage.address,
       deliveryManName,
-    };
+    };*/
   
-    return packageInfo;
+    return singlePackage;
+  }
+
+
+  static async getAllPackages() {
+    try {
+      const currentDate = new Date().toISOString().split("T")[0]; 
+      const allPackages = await Package.find({ assigned: false, delivery_date: currentDate }); 
+      return allPackages;
+    } catch (error) {
+      throw error;
+    }
   }
 }
 

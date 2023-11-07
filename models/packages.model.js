@@ -30,8 +30,12 @@ const packageSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    status: {
+      type: String,
+      default: "PENDIENTE",
+    },
   },
-  { modelOptions }
+ 
 );
 const packageModel = mongoose.model("Packages", packageSchema);
 

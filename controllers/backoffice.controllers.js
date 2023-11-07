@@ -2,6 +2,7 @@ const packageModel = require("../models/packages.model");
 const userModel = require("../models/user.model");
 const PackageService = require("../services/package.services");
 const backofficeServices = require("../services/backoffice.services");
+const { processDealersInfo } = require("../helpers/dealers.info");
 
 class backofficeControllers {
   static async packagesPerDay(req, res) {
@@ -23,10 +24,10 @@ class backofficeControllers {
     try {
       const packageData = req.body;
       const newPackage = await PackageService.createPackage(packageData);
-      res.status(201).json({ newPackage });
+      res.status(201).json({ newPackage, msg: "Se agrego paquete con exito" });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: "Error adding package" });
+      res.status(500).json({ msg: "Error al agregar paquete" });
     }
   }
 
@@ -61,29 +62,63 @@ class backofficeControllers {
   }
 
   static async getDealers(req, res) {
-    const { delivery_date } = req.body;
+    const { delivery_date } = req.query;
     try {
-      const packages = await backofficeServices.getDealers({ delivery_date });
-
-      let usersId = [];
-      for (let i = 0; i < packages.length; i++) {
-        if (
-          packages[i].deliveryMan_id &&
-          !usersId.includes(packages[i].deliveryMan_id)
-        ) {
-          usersId.push(packages[i].deliveryMan_id);
-        }
-      }
-
-      let promesas = usersId.map((userId) => {
-        return userModel.findById(userId);
+      const usersAndPackages = await backofficeServices.getDealers({
+        delivery_date,
       });
+      const { packages, users } = usersAndPackages;
+      const usersCopy = users.map((user) => user.toObject());
+      const dealersInfo = processDealersInfo(usersCopy, packages);
 
-      const users = await Promise.all(promesas);
-
-      res.status(200).json({ users, packages });
+      res.status(200).json({ dealersInfo });
     } catch (error) {
-      console.log(error);
+      console.error("Error en dealers:", error);
+      res.status(400).json({
+        error:
+          error.message || "Error al obtener los repartidores para esa fecha",
+      });
+    }
+  }
+  static async getDealersById(req, res) {
+    const { id } = req.params;
+    try {
+      const user = await userModel.findById(id);
+      res.status(200).json({ user });
+    } catch (error) {
+      console.error("Error en repartidor:", error);
+      res.status(400).json({
+        error:
+          error.message || "Error al obtener los repartidores para esa fecha",
+      });
+    }
+  }
+  static async dealersToDisabled(req, res) {
+    const { id } = req.params;
+    const { status } = req.body;
+    try {
+      const user = await userModel.findByIdAndUpdate(id, { status: status });
+      res.status(200).json({ msg: "Se actualizo el estado del repartidor" });
+    } catch (error) {
+      console.error("Error en repartidor:", error);
+      res.status(400).json({
+        error: error.message || "Error al obtener el repartidor",
+      });
+    }
+  }
+  static async delearHistory(req, res) {
+    const { id, delivered } = req.query;
+    try {
+      const packages = await packageModel.find({
+        deliveryMan_id: id,
+        delivered: delivered,
+      });
+      res.status(200).json({ packages });
+    } catch (error) {
+      console.error("Error en repartidor:", error);
+      res.status(400).json({
+        error: error.message || "Error al obtener el repartidor",
+      });
     }
   }
 }
