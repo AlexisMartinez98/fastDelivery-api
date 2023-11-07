@@ -10,6 +10,7 @@ const generateId = require("../helpers/generateId");
 
 class UserController {
   static async createUser(req, res) {
+    const refererUrl = req.headers.referer;
     try {
       const {
         email,
@@ -43,7 +44,8 @@ class UserController {
       await sendRegistrationEmail(
         email,
         email.trim().split("@")[0],
-        user.token
+        user.token,
+        refererUrl
       );
       return res.status(201).json({ user });
     } catch (error) {
@@ -70,7 +72,7 @@ class UserController {
         res.status(200).json({
           _id: user._id,
           email: user.email,
-          token: generateJWT(user.email, user.is_admin,user._id),
+          token: generateJWT(user.email, user.is_admin, user._id),
         });
       } else {
         res.status(401).json({ msg: "Credenciales invalidas" });
@@ -117,6 +119,7 @@ class UserController {
     }
   }
   static async forgetPassword(req, res) {
+    const refererUrl = req.headers.referer;
     const { email } = req.body;
     const user = await userModel.findOne({ email });
     if (!user) {
@@ -135,7 +138,12 @@ class UserController {
     try {
       user.token = generateId();
       await user.save();
-      await forgetPassword(email, email.trim().split("@")[0], user.token);
+      await forgetPassword(
+        email,
+        email.trim().split("@")[0],
+        user.token,
+        refererUrl
+      );
       res.json({ msg: "Se ha enviado un correo para cambiar la contraseña" });
     } catch (error) {
       console.log(error);
