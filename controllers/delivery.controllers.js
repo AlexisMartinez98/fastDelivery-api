@@ -61,6 +61,7 @@ class deliveryControllers {
       }
       const finishPackage = await packageModel.findByIdAndUpdate(id, {
         delivered: true,
+        status: "ENTREGADO"
       });
       res.status(200).json({ finishPackage });
     } catch (error) {
