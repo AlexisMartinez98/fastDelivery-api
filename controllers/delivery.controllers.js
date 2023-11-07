@@ -43,57 +43,50 @@ console.error(error);
 res.status(400).json({ msg: "error al cancelar paquete" });
 }
 }
-//static async finishDelivery(req, res) {
-// try {
-// const id = req.params.id;
-// const idExists = await packageModel.findById(id);
-// if (!idExists) {
-// return res.status(400).json({ msg: "id incorrecto" });
-// }
-// if (idExists.delivered) {
-// return res.status(400).json({ msg: "paquete ya entregado" });
-// }
-// if (!idExists.assigned || idExists.deliveryMan_id === "") {
-// return res.status(400).json({ msg: "paquete no asignado" });
-// }
-// const finishPackage = await packageModel.findByIdAndUpdate(id, {
-// delivered: true,
-// status: "ENTREGADO"
-// });
-// res.status(200).json({ finishPackage });
-// } catch (error) {
-// console.error(error);
-// res.status(400).json({ msg: "error al cancelar paquete" });
-// }
-
 static async finishDelivery(req, res) {
-  try {
-    const id = req.params.id;
-    const newPackage = await packageModel.findById(id);
-
-    if (!newPackage) {
-      return res.status(400).json({ msg: "ID incorrecto" });
-    }
-
-    if (newPackage.delivered) {
-      return res.status(400).json({ msg: "Paquete ya entregado" });
-    }
-
-    if (!newPackage.assigned || newPackage.deliveryMan_id === "") {
-      return res.status(400).json({ msg: "Paquete no asignado" });
-    }
-
-    newPackage.status = "ENTREGADO";
-    newPackage.delivered = true;
-
-    const finishPackage = await newPackage.save();
-
-    res.status(200).json({ finishPackage });
-  } catch (error) {
-    console.error(error);
-    res.status(400).json({ msg: "Error al finalizar la entrega del paquete" });
-  }
+ try {
+const id = req.params.id;
+ const idExists = await packageModel.findById(id);
+ if (!idExists) {
+ return res.status(400).json({ msg: "id incorrecto" });
+ }
+ if (idExists.delivered) {
+ return res.status(400).json({ msg: "paquete ya entregado" });
 }
+ if (!idExists.assigned || idExists.deliveryMan_id === "") {
+ return res.status(400).json({ msg: "paquete no asignado" });
+ }
+ const finishPackage = await packageModel.findByIdAndUpdate(id, {
+ delivered: true,
+ status: "ENTREGADO"
+ });
+ res.status(200).json({ finishPackage });
+ } catch (error) {
+ console.error(error);
+ res.status(400).json({ msg: "error al cancelar paquete" });
+ }
+
+
+  
+  
+  static async cancelPackage(req, res) {
+    try {
+      const id = req.params.id;
+      const idExists = await packageModel.findById(id);
+      if (!idExists) {
+        return res.status(400).json({ msg: "id incorrecto" });
+      }
+      const cancelPackage = await packageModel.findByIdAndUpdate(id, {
+        deliveryMan_id: "",
+        assigned: false,
+        status: "PENDIENTE"
+      });
+      res.status(200).json({ cancelPackage });
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ msg: "error al cancelar paquete" });
+    }
+ }
 
 
 static async userHistory(req, res) {
@@ -122,6 +115,7 @@ static async getPendingDeliveries(req, res) {
   console.error("Error get pending deliveries:",error);
   res.status(400).json({ error: "Error al obtener repartos pendientes" });
   }
+
 }
 
 static async takePackage(req, res) {
@@ -148,5 +142,9 @@ res.status(200).json(updatedPackage);
 res.status(500).json({ error: 'Error al actualizar el estado del paquete' });
 }
 }
+
+  
+  
+
 }
 module.exports = deliveryControllers;

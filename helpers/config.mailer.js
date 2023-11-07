@@ -15,13 +15,18 @@ function sendEmail(mailOptions) {
   });
 }
 
-async function sendRegistrationEmail(destinatario, nombreUsuario, token) {
+async function sendRegistrationEmail(
+  destinatario,
+  nombreUsuario,
+  token,
+  refererUrl
+) {
   const mailOptions = {
     from: process.env.USER_MAILER,
     to: destinatario,
     subject: "Por favor confirmar cuenta",
     text: `Hola ${nombreUsuario},\n\n¡Gracias por registrarte en nuestra aplicación!
-    a continuacion te dejamos el link para poder confirmar tu cuenta\n\n click en el link --> http://localhost:3000/confirm_account/${token}`,
+    a continuacion te dejamos el link para poder confirmar tu cuenta\n\n click en el link --> ${refererUrl}confirm_account/${token}`,
   };
 
   try {
@@ -32,13 +37,13 @@ async function sendRegistrationEmail(destinatario, nombreUsuario, token) {
   }
 }
 
-async function forgetPassword(destinatario, nombreUsuario, token) {
+async function forgetPassword(destinatario, nombreUsuario, token, refererUrl) {
   const mailOptions = {
     from: process.env.USER_MAILER,
     to: destinatario,
     subject: "Recuperar contraseña",
     text: `Hola ${nombreUsuario},\n\n¡Recupera tu contraseña!
-    a continuacion te dejamos el link para poder cambiar tu contraseña\n\n click en el link --> http://localhost:3000/new_password/${token}`,
+    a continuacion te dejamos el link para poder cambiar tu contraseña\n\n click en el link --> ${refererUrl}new_password/${token}`,
   };
 
   try {
