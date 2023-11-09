@@ -12,12 +12,11 @@ const app = express();
 
 const PORT = process.env.PORT;
 
-
 const server = app.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}`)
+  console.log(`Server is listening on port ${PORT}`);
 });
 
-
+//desde la pc a aws
 app.use(
   cors({
     origin: ["http://localhost:3000", "http://localhost:3001"],
@@ -40,14 +39,10 @@ mongoose
   .then(() => {
     console.log("MongoDB connected");
     server;
-    
   })
   .catch((err) => {
     console.error(err);
     process.exit(1);
   });
 
-
-  module.exports = {app, server};
-
-
+module.exports = { app, server };
